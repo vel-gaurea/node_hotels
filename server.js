@@ -7,9 +7,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 
-app.get('/', function (req, res) {
-    res.send("Welcome to our Hotel, How can i help you sir");
-})
+
 
 // app.get('/user/:slug', (req, res) => {
 //     res.send(`You Ordered ${req.params.slug}`);
@@ -29,8 +27,16 @@ app.get('/', function (req, res) {
 //     res.send("Serving Daal");
 // })
 
+const logRequest = (req, res, next) => {  //MIDDLEWARE FUNCTION
+    console.log(`[${new Date().toLocaleString()}] Request made to : ${req.originalUrl}`)
+    next(); // MOVE TO THE NEXT PHASE
+}
 
+app.get('/', function (req, res) {
+    res.send("Welcome to our Hotel, How can i help you sir");
+})
 
+app.use(logRequest);     //MIDDLEWARE 
 
 const personRoutes = require('./routes/personRoutes');
 app.use('/person', personRoutes)
